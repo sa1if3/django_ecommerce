@@ -2,7 +2,7 @@
 
 ## Installation
 ### Download the project
-`git clone https://github.com/sa1if3/django_ecommerce` or `Download ZIP`
+`git clone https://github.com/sa1if3/django_ecommerce` or `[Download ZIP](https://github.com/sa1if3/django_ecommerce/archive/refs/heads/main.zip)`
 
 ### Set Environment 
 Create a Virtual Environment
@@ -11,13 +11,19 @@ virtualenv venv
 ```
 
 Activate Virtual Environment
-`source venv/bin/activate`
+```bash
+source venv/bin/activate
+```
 
 Download Prequisites using requirements.txt
-`pip install -r requirements.txt`
+```bash
+pip install -r requirements.txt
+```
 
 Deactivate Virtual Environment
-`deactivate`
+```bash
+deactivate
+```
 
 ### Async Tasks using Celery and Redis
 Install Redis in Ubuntu 20.04 by following this [tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04)
@@ -34,9 +40,13 @@ CELERY_TIMEZONE = 'Asia/Kolkata'
 ```
 
 Activate Virtual Environment
-`source venv/bin/activate`
+```bash
+source venv/bin/activate
+```
 
 Run Celery worker
-`celery -A django_ecommerce  worker -l info`
+```bash
+celery -A django_ecommerce  worker -l info
+```
 
 [Note: In production this command can be put in Supervisor]
