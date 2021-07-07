@@ -2,7 +2,12 @@
 
 ## Installation
 ### Download the project
-`git clone https://github.com/sa1if3/django_ecommerce` or `[Download ZIP](https://github.com/sa1if3/django_ecommerce/archive/refs/heads/main.zip)`
+```bash
+git clone https://github.com/sa1if3/django_ecommerce
+``` 
+or 
+
+[Download ZIP](https://github.com/sa1if3/django_ecommerce/archive/refs/heads/main.zip)
 
 ### Set Environment 
 Create a Virtual Environment
