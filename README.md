@@ -20,9 +20,9 @@ Deactivate Virtual Environment
 ### Async Tasks using Celery and Redis
 Install Redis in Ubuntu 20.04 by following this [tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04)
 
-In `settings.py` set th following variables. Change according to your use-case.
+In `settings.py` set the following variables. Change according to your use-case.
 
-`
+`python
 BROKER_URL = 'redis://localhost:6379'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
