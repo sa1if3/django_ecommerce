@@ -1,0 +1,145 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% block main_title %}
+Checkout
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Checkout </h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Checkout </li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+
+    <!-- Default box -->
+    <form action="{% url 'place_order' %}" method="POST">
+    <div class="card">
+      <!-- <div class="card-header">
+        <button style="float: right;" class="btn btn-warning ">Place Order</button>
+      </div> -->
+      <div class="card-body">
+          {% csrf_token %}
+          {% for id,qty in value_pair.items %}
+          <input type="hidden" name="itemID[]" value="{{id}}" readonly>
+          <input type="hidden" name="itemQTY[]" value="{{qty}}" readonly>
+          {% endfor %}
+          <input type="hidden" name="number" value="">
+          <input type="hidden" name="payment_status" value="">
+          <input type="hidden" name="payment_mode" value="">
+          <input type="hidden" name="payment_mode" value="{{total}}">
+          <input type="hidden" name="grand_total" value="{{grand_total}}">
+        <div class="row">
+          <div class="col-md-4">
+            {% if address %}
+              <h4>Delivery Address</h4>
+              <select name="shipping_address">
+                {% for obj in address %}
+                {% if obj.is_default == True %}
+                <option value="{{obj.id}}" selected>{{obj.name}}</option>
+                {% else %}
+                <option value="{{obj.id}}">{{obj.name}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+              <br /><br /><br />
+              <h4>Billing Address</h4>
+              <select name="billing_address">
+                {% for obj in address %}
+                {% if obj.is_default == True %}
+                <option value="{{obj.id}}" selected>{{obj.name}}</option>
+                {% else %}
+                <option value="{{obj.id}}">{{obj.name}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            {% else %}
+            <h4 style="color: red;;">You have not saved any address!</h4>
+            <a  class="btn btn-block btn-outline-primary" href="{% url 'add_new_address' %}">Add New
+              Entry</a class=""><br/>
+            <img class="img-fluid" src="{% static 'AdminLTE-master/dist/img/undraw_My_location_re_r52x.svg' %}" alt="Address Avatar">
+            {% endif %}
+          </div>
+          <div class="col-md-8">
+            <h4>Item List</h4>
+            <table class="table">
+              <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price Per Qty</th>
+                <th>Total</th>
+              </tr>
+              {% for obj in cart %}
+              <tr>
+                <td>{{obj.listing.name}}</td>
+                <td>{{obj.total_quantity}} {{obj.listing.weight_group}}</td>
+                <td>{{obj.listing.selling_price_per_quantity}}<strike
+                    style="color: red;">{{obj.listing.original_price_per_quantity}}</strike></td>
+                <td id="td_{{obj.id}}">₹ {% widthratio obj.total_quantity 1 obj.listing.selling_price_per_quantity %}</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <th colspan="3" style="text-align: right;">Total:</th>
+                <th>₹ {{total}}</th>
+              </tr>
+              <tr>
+                <th colspan="3" style="text-align: right;">GST ({{tax}}%):</th>
+                <th>₹ {{gst}}</th>
+              </tr>
+              <tr>
+                <th colspan="3" style="text-align: right;">Grand Total:</th>
+                <th>₹ {{grand_total}}</th>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- /.card-body -->
+      <div class="card-footer">
+        <button type="submit" style="float: right;" class="btn btn-warning ">Place Order</button>
+      </div>
+      <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+  </form>
+
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% block main_title %}
+My Addresses
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <!-- <h1>My Addresses </h1> -->
+          <a style="width: 50%;" class="btn btn-block btn-outline-primary" href="{% url 'add_new_address' %}">Add New
+            Entry</a class="">
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">My Addresses</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+    <div class="row">
+      {% for obj in address %}
+      <!-- /.col -->
+      <div class="col-md-4">
+        <!-- Widget: user widget style 1 -->
+        <div class="card card-widget widget-user">
+          <div class="ribbon-wrapper ribbon-xl">
+            {% if obj.is_default %}
+            <div class="ribbon bg-warning text-lg">
+              Default
+            </div>
+            {% else %}
+            <div class="ribbon bg-gray text-lg">
+              Not Default
+            </div>
+            {% endif %}
+          </div>
+          <!-- Add the bg color to the header using any of the bg-* classes -->
+          <div class="widget-user-header bg-info">
+
+            <h3 class="widget-user-username">{{ obj.name}}</h3>
+            <h5 class="widget-user-desc">{{ obj.contact_name}}</h5>
+          </div>
+          <div class="widget-user-image">
+            <img class="img-circle elevation-2"
+              src="{% static 'AdminLTE-master/dist/img/undraw_My_location_re_r52x.svg' %}" alt="User Avatar">
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <p>
+                {{obj.address_line_1}}<br />
+                {% if address_line_2 %}
+                {{obj.address_line_2}}<br />
+                {% endif %}
+                {% if obj.gst_number %}
+                GST: {{obj.gst_number}}<br />
+                {% endif %}
+                {{obj.city}},{{obj.state}}-{{obj.pincode}}<br />
+                Contact: {{ obj.contact_number}}
+                <br/>
+              </p>
+                <a class="btn btn-block btn-outline-primary btn-sm" href="{% url 'edit_address' obj.id %}"><span
+                    class="fas fa-edit">&nbsp;Edit</span></a><br/><br/>
+                    <form style="width:100%" method="POST" action="{% url 'delete_address' obj.id %}">
+                      {% csrf_token %}
+                      <!-- Checkbox i = 2 -->
+                       <button class="btn btn-block btn-outline-danger btn-sm delete-confirm"
+                          type="submit"><span class="fas fa-trash">&nbsp;Delete</span></button>
+                  </form>
+              
+            </div>
+            <!-- /.description-block -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      {% endfor %}
+    </div>
+    <!-- /.widget-user -->
+</div>
+<!-- /.col -->
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  $('.delete-confirm').on('click', function (ev) {
+        ev.preventDefault();
+        var form = $(this).parents('form');
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, item will be removed permanently!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                    swal("Poof! Cart item has been deleted!", {
+                        icon: "success",
+                    });
+                } else {
+                    swal("Cart item is safe!");
+                }
+            });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,217 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% load tz %}
+
+{% block main_title %}
+My Inventories
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'AdminLTE-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet"
+  href="{% static 'AdminLTE-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'AdminLTE-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <!-- <h1>My Inventories </h1> -->
+          <a style="width: 50%;" class="btn btn-block btn-outline-primary" href="{% url 'add_new_listing' %}">Add New
+            Entry</a class="">
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">My Inventories</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <!-- <div class="card-header">
+              <h3 class="card-title">Listings</h3>
+            </div> -->
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Timestamp</th>
+                    <th>Image</th>
+                    <th>Item Type</th>
+                    <th>Inventory Name</th>
+                    <th>Total Qty</th>
+                    <th>Min. Order Qty</th>
+                    <th>Weight Group</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for obj in listing%}
+                  <tr>
+                    <td>{{obj.name}}</td>
+                    <td>
+                      <strong>Created:</strong>{{obj.created_at |timezone:"Asia/Kolkata"}}
+                      <br />
+                      <strong>Updated:</strong>{{obj.updated_at |timezone:"Asia/Kolkata"}}
+                    </td>
+                    <td>
+                      {% if obj.image %}
+                      <img src="{{obj.image.url}}" class="img-fluid" style="max-height: 160px;">
+                      {% else %}
+                        {% if obj.item_type.image %}
+                          <img src="{{obj.item_type.image.url}}" class="img-fluid" style="max-height: 160px;">
+                        {% else %}
+                        <img src="{%static 'AdminLTE-master/dist/img/undraw_environment_iaus.svg' %}" class="img-fluid" style="max-height: 160px;">
+                        {% endif %}
+                      {% endif %}</td>
+                    <td>{{obj.item_type}}</td>
+                    <td>{{obj.inventory_name}}</td>
+                    <td>{{obj.quantity}}</td>
+                    <td>{{obj.minimum_order_quantity}}</td>
+                    <td>{{obj.weight_group}}</td>
+                    <td>Original: {{obj.original_price_per_quantity}}<br />
+                      Selling: {{obj.selling_price_per_quantity}}</td>
+                    <td>
+                      {% if obj.status == 'PUBLIC'%}
+                      <span class="badge bg-success">
+                      {% else %}
+                      <span class="badge bg-danger">
+                      {% endif %}
+                        {{obj.status}}</span>
+                    </td>
+                    <td>
+                      <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Click
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="{% url 'edit_listing' obj.id %}"><span
+                              class="fas fa-edit">&nbsp;Edit</span></a>
+                              <form style="width:100%" method="POST" action="{% url 'delete_listing' obj.id %}">
+                                {% csrf_token %}
+                                <!-- Checkbox i = 2 -->
+                                 <button class="dropdown-item delete-confirm"
+                                    type="submit"><span class="fas fa-trash">&nbsp;Delete</span></button>
+                            </form>
+                        </div>
+                      </div>
+                    </td>
+                    {% endfor %}
+                  </tr>
+                </tbody>
+                <!-- <tfoot>
+                  
+                  <tr>
+                    <th>Name</th>
+                    <th>Timestamp</th>
+                    <th>Item Type</th>
+                    <th>Inventory Name</th>
+                    <th>Total Qty</th>
+                    <th>Min. Order Qty</th>
+                    <th>Weight Group</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>About</th>
+                    <th>Actions</th>
+                  </tr>
+                  
+                </tfoot> -->
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <!-- /.widget-user -->
+    </div>
+  </section>
+</div>
+<!-- /.col -->
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- DataTables  & Plugins -->
+<script src="{% static 'AdminLTE-master/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  $('.delete-confirm').on('click', function (ev) {
+        ev.preventDefault();
+        var form = $(this).parents('form');
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, item will be removed permanently!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                    swal("Poof! Cart item has been deleted!", {
+                        icon: "success",
+                    });
+                } else {
+                    swal("Cart item is safe!");
+                }
+            });
+    });
+</script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "paging": false,
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+  });
+</script>
+{% endblock %}

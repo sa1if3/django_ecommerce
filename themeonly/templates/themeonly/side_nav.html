@@ -1,0 +1,196 @@
+{% load static %}
+{% load custom_tags %}
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url 'dashboard' %}" class="brand-link">
+      <img src="{% static 'AdminLTE-master/dist/img/leaf-2135345_640.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light"><b>{% app_name %}</b> {% app_name_tail %}</a></span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{% static 'AdminLTE-master/dist/img/child-1837375_640.png' %}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          {% if user.is_authenticated %}
+          <a href="#" class="d-block">{{user.get_username}}</a>
+          {% else %}
+          <a href="{% url 'user_login' %}" class="d-block">Click to Login!!</a>
+          {% endif %} 
+        </div>
+      </div>
+
+      <!-- SidebarSearch Form -->
+      <!-- <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+               {% with request.resolver_match.url_name as url_name %}
+               {% if user.is_authenticated %}
+               <li class="nav-item">
+                <a href="{% url 'dashboard' %}" class="nav-link {% if url_name == 'dashboard' %}active{% endif %}">
+                  <i style="color: #fff;" class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                    Dashboard
+                  </p>
+                </a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                <a href="{% url 'search_listing' %}" class="nav-link {% if url_name == 'search_listing' %}active{% endif %}">
+                  <i style="color: orangered;" class="nav-icon fas fa-fire"></i>
+                  <p>
+                    Buy Item
+                  </p>
+                </a>
+              </li>
+              {% if user.is_authenticated %}
+
+              <li class="nav-item">
+                <a href="{% url 'show_all_order' %}" class="nav-link {% if url_name == 'show_all_order' %}active{% endif %}">
+                  <i style="color: red;" class="nav-icon fas fa-heart"></i>
+                  <p>
+                    My Orders
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i style="color: #fff;" class="nav-icon fas fa-book"></i>
+                  <p>
+                    Quote Requests
+                    <i  class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'show_all_sent_quote' %}" class="nav-link {% if url_name == 'show_all_sent_quote' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Sent</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'show_all_received_quote' %}" class="nav-link {% if url_name == 'show_all_received_quote' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Received</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i style="color: #fff;" class="nav-icon fas fa-home"></i>
+                  <p>
+                    My Addresses
+                    <i  class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'show_all_address' %}" class="nav-link {% if url_name == 'show_all_address' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Show All</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'add_new_address' %}" class="nav-link {% if url_name == 'add_new_address' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add New</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i style="color: #fff;" class="nav-icon fas fa-cubes"></i>
+                  <p>
+                    My Inventories
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'show_all_inventory' %}" class="nav-link {% if url_name == 'show_all_inventory' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Show All</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'add_new_inventory' %}" class="nav-link {% if url_name == 'add_new_inventory' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add New</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i style="color: #fff;" class="nav-icon fas fa-list"></i>
+                  <p>
+                    My Listings
+                    <i class="right fas fa-angle-left"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'show_all_listing' %}" class="nav-link {% if url_name == 'show_all_listing' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Show All</p>
+                    </a>
+                  </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{% url 'add_new_listing' %}" class="nav-link {% if url_name == 'add_new_listing' %}active{% endif %}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Add New</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'show_my_customer_orders' %}" class="nav-link {% if url_name == 'show_my_customer_orders' %}active{% endif %}">
+                  <i style="color:burlywood;" class="nav-icon fas fa-users"></i>
+                  <p>
+                    Customer's Orders
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{% url 'show_user_chat' %}" class="nav-link {% if url_name == 'show_user_chat' %}active{% endif %}">
+                  <i style="color: #fff;" class="nav-icon fas fa-comment"></i>
+                  <p>
+                    My Messages
+                  </p>
+                </a>
+              </li>
+              {% endif %}
+              {% endwith %}
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>

@@ -1,0 +1,100 @@
+{% load tz %}
+{% load custom_tags %}
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Individual Invoice</title>
+    <meta name="description" content="Invoice demo sample">
+    <meta name="author" content="Kozea">
+  </head>
+
+  <body>
+    <h1>{% app_name_short %}</h1>
+
+    <aside>
+      <address id="from">
+        <strong>Billing Address</strong>
+        {{main_order.billing_address.name}}
+        GST:{{main_order.billing_address.gst_number}}
+        {{main_order.billing_address.address_line_1}}
+        {{main_order.billing_address.address_line_2}}
+        {{main_order.billing_address.city}},{{main_order.billing_address.state}}-{{main_order.billing_address.pincode}}
+        {{main_order.billing_address.contact_name}}-{{main_order.billing_address.contact_number}}
+        Deliver Instructions: {{main_order.billing_address.delivery_instructions}}
+      </address>
+
+      <address id="to">
+        <strong>Shipping Address</strong>
+        {{main_order.shipping_address.name}}
+        GST:{{main_order.shipping_address.gst_number}}
+        {{main_order.shipping_address.address_line_1}}
+        {{main_order.shipping_address.address_line_2}}
+        {{main_order.shipping_address.city}},{{main_order.shipping_address.state}}-{{main_order.shipping_address.pincode}}
+        {{main_order.shipping_address.contact_name}}-{{main_order.shipping_address.contact_number}}
+        Deliver Instructions: {{main_order.shipping_address.delivery_instructions}}
+      </address>
+    </aside>
+
+    <dl id="informations">
+      <dt>Sub Order No.</dt>
+      <dd>{{order.invoice_id}}</dd>
+      <dt>Date</dt>
+      <dd>{{order.created_at|timezone:"Asia/Kolkata"}}</dd>
+    </dl>
+
+    <table>
+      <thead>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </thead>
+      <tbody>
+        <tr>
+            <td>{{order.item_name.name}}</td>
+            <td>₹ {{order.purchase_price_per_quantity}}</td>
+            <td>{{order.quantity}}&nbsp;{{order.weight_group.name}}</td>
+            <td>₹ {{order.total_price}}</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+    <table id="total">
+        <thead>
+          <th>Total</th>
+          {% if is_igst %}
+          <th>IGST ({{tax}}%)</th>
+          <th>IGST ({{tax}}%)</th>
+          {% else %}
+          <th>CGST ({{tax}}%)</th>
+          <th>SGST ({{tax}}%)</th>          
+          {% endif %}
+          <th>Grand Total:</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>₹ {{order.total_price}}</td>
+            <td>₹ {{order.cgst}}</td>
+            <td>₹ {{order.sgst}}</td>
+            <td>₹ {{grand_total}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </body>
+
+<style>
+@page {
+  margin: 3cm;
+  @bottom-left {
+    color: #1ee494;
+    font-family: Pacifico;
+    content: '♥ Thank you!'; }
+  @bottom-right {
+    color: #a9a;
+    content: 'Platform: {% site_email %} | Seller GST: {{order.inventory_name.address.gst_number}}';
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt; } }
+</style>
+</html>

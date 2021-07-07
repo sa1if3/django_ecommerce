@@ -1,0 +1,91 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% block main_title %}
+Add Quote
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Add Quote</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Add Quote</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-10 offset-1">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <!-- <div class="card-header">
+                            <h3 class="card-title">Fill the form to Edit a new Listings</h3>
+                        </div> -->
+                        <form action="{% url 'update_quote_order' edit_id %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- /.card-header -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="quote_file">Quote</label>
+                                            {{ form.quote_file }}
+                                            {% if form.errors.quote_file  %}
+                                            <span class="alert-danger">{{ form.errors.quote_file.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" style="float: right;" class="btn btn-warning">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

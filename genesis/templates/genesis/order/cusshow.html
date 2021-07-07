@@ -1,0 +1,267 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% load tz %}
+{% block main_title %}
+My Customer's Orders
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'AdminLTE-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet"
+  href="{% static 'AdminLTE-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'AdminLTE-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <!-- <h1>My Customer's Orders </h1> -->
+          <a style="width: 50%;" class="btn btn-block btn-outline-primary" href="{% url 'add_new_listing' %}">Add New
+            Entry</a class="">
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">My Customer's Orders</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <!-- <div class="card-header">
+              <h3 class="card-title">Listings</h3>
+            </div> -->
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Order #</th>
+                    <th>Timestamp</th>
+                    <th>Item Name</th>
+                    <th>Inventory Name</th>
+                    <th>Total Qty</th>
+                    <th>Price</th>
+                    <th>Order Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for obj in items%}
+                  <tr>
+                    <td>{{obj.invoice_id}}<a class="btn btn-success btn-sm" target="_blank" href="{% url 'generate_seller_invoice_ordered' obj.id%}">Download
+                      Invoice</a></td></td>
+                    <td><strong>Created:</strong>{{obj.created_at|timezone:"Asia/Kolkata"}}<br />
+                      <strong>Updated:</strong>{{obj.updated_at|timezone:"Asia/Kolkata"}}
+                    </td>
+                    <td>{{obj.item_name}}
+                    <td>{{obj.inventory_name}}</td>
+                    <td>{{obj.quantity}} {{obj.weight_group}}</td>
+                    <td>{{obj.purchase_price_per_quantity}}</td>
+                    <td>
+                      
+                      {% if obj.order_status == "PLACED" %}
+                      <button class="btn btn-info btn-sm" disabled>Order Placed</button>
+                      {% elif obj.order_status == "ACCEPTED" %}
+                      <button class="btn btn-primary btn-sm" disabled>Order Accepted</button>
+                      {% elif obj.order_status == "PACKED" %}
+                      <button class="btn btn-dark btn-sm" disabled>Order Packed</button>
+                      {% elif obj.order_status == "SHIPPED" %}
+                      <button class="btn btn-warning btn-sm" disabled>Order Shipped</button>
+                      {% elif obj.order_status == "REJECTED" %}
+                      <button class="btn btn-danger btn-sm" disabled>Order Rejected</button>
+                      {% elif obj.order_status == "COMPLETED" %}
+                      <button class="btn btn-success btn-sm" disabled>Order Completed</button>
+                      {% else %}
+                      No Status Found
+                      {% endif %}
+                      
+                    </td>
+                      <td>
+                      <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton"
+                          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Change Status
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          {% if obj.order_status == "PLACED" %}
+                          {% else %}
+                          <form method="POST" action="{% url 'change_order_status' obj.id %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="order_status" value="PLACED">
+                          <button class="dropdown-item btn-sm" href="{% url 'edit_listing' obj.id %}"><span
+                                  class="fas fa-edit">&nbsp;PLACED</span></button>
+                          </form>
+                          {% endif %}
+                          {% if obj.order_status == "ACCEPTED" %}
+                          {% else %}
+                          <form method="POST" action="{% url 'change_order_status' obj.id %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="order_status" value="ACCEPTED">
+                          <button class="dropdown-item btn-sm" href="{% url 'edit_listing' obj.id %}"><span
+                                  class="fas fa-thumbs-up">&nbsp;ACCEPTED</span></button>
+                          </form>
+                          {% endif %}
+                          {% if obj.order_status == "PACKED" %}
+                          {% else %}
+                          <form method="POST" action="{% url 'change_order_status' obj.id %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="order_status" value="PACKED">
+                          <button class="dropdown-item btn-sm" href="{% url 'edit_listing' obj.id %}"><span
+                                  class="fas fa-th-large">&nbsp;PACKED</span></button>
+                          </form>
+                          {% endif %}
+                          {% if obj.order_status == "SHIPPED" %}
+                          {% else %}
+                          <form method="POST" action="{% url 'change_order_status' obj.id %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="order_status" value="SHIPPED">
+                          <button class="dropdown-item btn-sm" href="{% url 'edit_listing' obj.id %}"><span
+                                  class="fas fa-truck">&nbsp;SHIPPED</span></button>
+                          </form>
+                          {% endif %}
+                          {% if obj.order_status == "REJECTED" %}
+                          {% else %}
+                          <form method="POST" action="{% url 'change_order_status' obj.id %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="order_status" value="REJECTED">
+                          <button class="dropdown-item btn-sm" href="{% url 'edit_listing' obj.id %}"><span
+                                  class="fas fa-times">&nbsp;REJECTED</span></button>
+                          </form>
+                          {% endif %}
+                          {% if obj.order_status == "COMPLETED" %}
+                          {% else %}
+                          <form method="POST" action="{% url 'change_order_status' obj.id %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="order_status" value="COMPLETED">
+                          <button class="dropdown-item btn-sm" href="{% url 'edit_listing' obj.id %}"><span
+                                  class="fas fa-check">&nbsp;COMPLETED</span></button>
+                          </form>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                    {% endfor %}
+                    <ul class="pagination pagination-sm m-0 float-right">
+                      {% if items.has_other_pages %}
+                      {% if items.has_previous %}
+                      <li class="page-item"><a class="page-link"
+                              href="?search={{query}}&page={{ items.previous_page_number }}">&laquo;</a>
+                      </li>
+                      {% else %}
+                      <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                      {% endif %}
+                      {% for i in items.paginator.page_range %}
+                      {% if items.number == i %}
+                      <li class="page-item active"><a class="page-link" href="#">{{ i }} </a></li>
+                      {% else %}
+                      <li class="page-item"><a class="page-link" href="?search={{query}}&page={{ i }}">{{ i }}</a>
+                      </li>
+                      {% endif %}
+                      {% endfor %}
+                      {% if items.has_next %}
+                      <li class="page-item"><a class="page-link"
+                              href="?search={{query}}&page={{ items.next_page_number }}">&raquo;</a>
+                      </li>
+                      {% else %}
+                      <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+                      {% endif %}
+                      {% endif %}
+                  </ul>
+                </tbody>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <!-- /.widget-user -->
+    </div>
+  </section>
+</div>
+<!-- /.col -->
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- DataTables  & Plugins -->
+<script src="{% static 'AdminLTE-master/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  function deleteObject(ev) {
+    ev.preventDefault();
+    var urlToRedirect = ev.currentTarget.getAttribute('href'); //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
+    console.log(urlToRedirect); // verify if this is the right URL
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this data!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+      .then((willDelete) => {
+        // redirect with javascript here as per your logic after showing the alert using the urlToRedirect value
+        if (willDelete) {
+          window.location = urlToRedirect;
+          swal("Poof! Your data has been deleted!", {
+            icon: "success",
+          });
+        } else {
+          swal("Your data is safe!");
+        }
+      });
+  }
+</script>
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "paging": false,
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+  });
+</script>
+{% endblock %}

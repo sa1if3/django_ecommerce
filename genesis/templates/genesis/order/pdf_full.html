@@ -1,0 +1,94 @@
+{% load tz %}
+{% load custom_tags %}
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Full Invoice</title>
+    <meta name="description" content="Invoice demo sample">
+    <meta name="author" content="Kozea">
+  </head>
+
+  <body>
+    <h1>{% app_name_short %}</h1>
+
+    <aside>
+      <address id="from">
+        <strong>Billing Address</strong>
+        {{order.billing_address.name}}
+        GST:{{order.billing_address.gst_number}}
+        {{order.billing_address.address_line_1}}
+        {{order.billing_address.address_line_2}}
+        {{order.billing_address.city}},{{order.billing_address.state}}-{{order.billing_address.pincode}}
+        {{order.billing_address.contact_name}}-{{order.billing_address.contact_number}}
+        Deliver Instructions: {{order.billing_address.delivery_instructions}}
+      </address>
+
+      <address id="to">
+        <strong>Shipping Address</strong>
+        {{order.shipping_address.name}}
+        GST:{{order.shipping_address.gst_number}}
+        {{order.shipping_address.address_line_1}}
+        {{order.shipping_address.address_line_2}}
+        {{order.shipping_address.city}},{{order.shipping_address.state}}-{{order.shipping_address.pincode}}
+        {{order.shipping_address.contact_name}}-{{order.shipping_address.contact_number}}
+        Deliver Instructions: {{order.shipping_address.delivery_instructions}}
+      </address>
+    </aside>
+
+    <dl id="informations">
+      <dt>Order number</dt>
+      <dd>{{order.number}}</dd>
+      <dt>Date</dt>
+      <dd>{{order.created_at|timezone:"Asia/Kolkata"}}</dd>
+    </dl>
+
+    <table>
+      <thead>
+        <th>Description</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </thead>
+      <tbody>
+        {% for obj2 in order.item_details.all %}
+        <tr>
+            <td>{{obj2.item_name.name}}</td>
+            <td>₹ {{obj2.purchase_price_per_quantity}}</td>
+            <td>{{obj2.quantity}}&nbsp;{{obj2.weight_group.name}}</td>
+            <td>₹ {% widthratio obj2.purchase_price_per_quantity 1 obj2.quantity %}</td>
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+
+    <table id="total">
+        <thead>
+          <th>Total</th>
+          <th>GST ({{tax}}%)</th>
+          <th>Grand Total:</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td>₹ {{total}}</td>
+            <td>₹ {{gst}}</td>
+            <td>₹ {{grand_total}}</td>
+          </tr>
+        </tbody>
+      </table>
+  </body>
+  <style>
+    @page {
+      margin: 3cm;
+      @bottom-left {
+        color: #1ee494;
+        font-family: Pacifico;
+        content: '♥ Thank you!'; }
+      @bottom-right {
+        color: #a9a;
+        content: '{% site_email %} | GST: Check Invoice against each Item';
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 9pt; } }
+    </style>
+</html>

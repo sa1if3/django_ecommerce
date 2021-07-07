@@ -1,0 +1,191 @@
+{% extends 'themeonly/main.html' %}
+
+{% block main_title %}
+Order
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>My Orders</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Order</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Default box -->
+        <div class="card">
+            <!-- <div class="card-header">
+          <h3 class="card-title">Title</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div> -->
+            <div class="card-body">
+                {% for obj in items %}
+                <div class="list-group-item">
+                    <div class="row">
+                        <div class="col px-4">
+                            <div>
+                                <div class="float-right">
+                                    <a class="btn btn-warning btn-sm" target="_blank" href="{% url 'generate_invoice' obj.id%}">Download
+                                        Full Order Info</a>
+                                    </div>
+                                <h3 style="color: royalblue;">Order #{{obj.number}}</h3>{{obj.created_at}}
+                                <p class="mb-0">
+                                <!-- Accordian Start -->
+                                <div class="card-body">
+                                    <div id="accordion">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h4 class="card-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion"
+                                                        href="#collapse{{obj.number}}">
+                                                        Click here to view ordered items!
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="collapse{{obj.number}}" class="panel-collapse collapse in">
+                                                <div class="card-body">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Item Name</th>
+                                                                <th>Quantity</th>
+                                                                <th>Order Status</th>
+                                                                <th>Invoice</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for obj2 in obj.item_details.all %}
+                                                            <tr>
+                                                                <td>{{obj2.item_name.name}}</td>
+                                                                <td>{{obj2.quantity}}&nbsp;{{obj2.weight_group.name}}</td>
+                                                                <td>
+                                                                    {% if obj2.order_status == "PLACED" %}
+                                                                    <button class="btn btn-info btn-sm" disabled>Order Placed</button>
+                                                                    {% elif obj2.order_status == "ACCEPTED" %}
+                                                                    <button class="btn btn-primary btn-sm" disabled>Order Accepted</button>
+                                                                    {% elif obj2.order_status == "PACKED" %}
+                                                                    <button class="btn btn-dark btn-sm" disabled>Order Packed</button>
+                                                                    {% elif obj2.order_status == "SHIPPED" %}
+                                                                    <button class="btn btn-warning btn-sm" disabled>Order Shipped</button>
+                                                                    {% elif obj2.order_status == "REJECTED" %}
+                                                                    <button class="btn btn-danger btn-sm" disabled>Order Rejected</button>
+                                                                    {% elif obj2.order_status == "COMPLETED" %}
+                                                                    <button class="btn btn-success btn-sm" disabled>Order Completed</button>
+                                                                    {% else %}
+                                                                    No Status Found
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td><a class="btn btn-success btn-sm" target="_blank" href="{% url 'generate_invoice_ordered' obj2.id%}">Download
+                                                                    Invoice</a></td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Accordian end -->
+                                <div>
+
+
+                                    <div class="float-right">
+                                        <h3><strong>Total Price:</strong>
+                                            {{obj.grand_total}}({{obj.payment_status}})</h3>
+                                    </div>
+                                    <br />
+
+                                    <span class="badge bg-success" id="msg_{{obj.id}}"></span>
+                                </div>
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                {% endfor %}
+                <ul class="pagination pagination-sm m-0 float-right">
+                    {% if items.has_other_pages %}
+                    {% if items.has_previous %}
+                    <li class="page-item"><a class="page-link"
+                            href="?search={{query}}&page={{ items.previous_page_number }}">&laquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                    {% endif %}
+                    {% for i in items.paginator.page_range %}
+                    {% if items.number == i %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ i }} </a></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="?search={{query}}&page={{ i }}">{{ i }}</a>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    {% if items.has_next %}
+                    <li class="page-item"><a class="page-link"
+                            href="?search={{query}}&page={{ items.next_page_number }}">&raquo;</a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+                    {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+            <!-- /.card-body -->
+            <!-- <div class="card-footer">
+          Footer
+        </div> -->
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

@@ -1,0 +1,216 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% block main_title %}
+Add New Listings
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Add New Listings</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Add New Listings</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-10 offset-1">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <!-- <div class="card-header">
+                            <h3 class="card-title">Fill the form to add a new Listings</h3>
+                        </div> -->
+                        <form action="{% url 'add_new_listing' %}" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <!-- /.card-header -->
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="itemName">Item Name</label>
+                                            {{ form.name }}
+                                            {% if form.errors.name %}
+                                            <span class="alert-danger">{{ form.errors.name.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="itemType">Item Type</label>
+                                            {{ form.item_type }}
+                                            {% if form.errors.item_type %}
+                                            <span class="alert-danger">{{ form.errors.item_type.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="inventoryName">Inventory Name</label>
+                                            {{ form.inventory_name }}
+                                            {% if form.errors.inventory_name %}
+                                            <span class="alert-danger">{{ form.errors.inventory_name.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="maxQuantity">Max Quantity</label>
+                                            {{ form.quantity }}
+                                            {% if form.errors.quantity %}
+                                            <span class="alert-danger">{{ form.errors.quantity.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="minimumOrderQuantity">Minimum Order Quantity</label>
+                                            {{ form.minimum_order_quantity }}
+                                            {% if form.errors.minimum_order_quantity %}
+                                            <span class="alert-danger">{{ form.errors.minimum_order_quantity.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="weightGroup">Weight Group of the Item</label>
+                                            {{ form.weight_group }}
+                                            {% if form.errors.weight_group %}
+                                            <span class="alert-danger">{{ form.errors.weight_group.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="originalPricePerQuantity">Original Price Per Quantity</label>
+                                            {{ form.original_price_per_quantity }}
+                                            {% if form.errors.original_price_per_quantity  %}
+                                            <span class="alert-danger">{{ form.errors.original_price_per_quantity.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="SellingPricePerQuantity">Selling Price Per Quantity</label>
+                                            {{ form.selling_price_per_quantity }}
+                                            {% if form.errors.selling_price_per_quantity  %}
+                                            <span class="alert-danger">{{ form.errors.selling_price_per_quantity.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="status">View Status</label>
+                                            {{ form.status }}
+                                            {% if form.errors.status  %}
+                                            <span class="alert-danger">{{ form.errors.status.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="about">About the Item</label>
+                                            {{ form.about }}
+                                            {% if form.errors.about %}
+                                            <span class="alert-danger">{{ form.errors.about.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="keywords">Keywords (Comma-Separated)</label>
+                                            {{ form.keywords }}
+                                            {% if form.errors.keywords  %}
+                                            <span class="alert-danger">{{ form.errors.keywords.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="image">Image</label>
+                                            {{ form.image }}
+                                            {% if form.errors.image  %}
+                                            <span class="alert-danger">{{ form.errors.image.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <button type="submit" style="float: right;" class="btn btn-warning">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

@@ -1,0 +1,272 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% block main_title %}
+Buy Items
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .prod {
+        width: 200px;
+        height: 300px;
+        object-fit: scale-down;
+    }
+
+    .no-outline:focus {
+        outline: none;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1></h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Item Page</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <form action="{% url 'public_listing' %}" method="GET">
+                        <div class="input-group input-group-lg">
+                            <input name="search" id="search" type="search" class="form-control form-control-lg"
+                                placeholder="Type your keywords here" value="{{query}}">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-lg btn-default">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-10 offset-md-1">
+                    <div class="list-group">
+                        <!-- <div class="list-group-item">
+                            <div class="row">
+                                <div class="col px-4">
+                                    <div>
+                                        <div class="float-right">2021-04-20 04:04pm</div>
+                                        <h3>Lorem ipsum dolor sit amet</h3>
+                                        <p class="mb-0">consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        {% for obj in items %}
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-auto">
+                                    {% if obj.image %}
+                                    <img src="{{obj.image.url}}" class="prod" style="max-height: 160px;">
+                                    {% else %}
+                                    {% if obj.item_type.image %}
+                                    <img src="{{obj.item_type.image.url}}" class="prod" style="max-height: 160px;">
+                                    {% else %}
+                                    <img src="{%static 'AdminLTE-master/dist/img/undraw_environment_iaus.svg' %}"
+                                        class="prod" style="max-height: 160px;">
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                                <div class="col px-4">
+                                    <div>
+                                        <div class="float-right"><strong style="color: blue;">Available:</strong>
+                                            {{obj.quantity}} {{obj.weight_group}}</div>
+                                        <h3>{{obj.name}}</h3>
+                                        <h6><strong style="color: blue;">Inventory Name: </strong>{{obj.inventory_name.name}} | <strong style="color: blue;">Minimum Order Qty.: </strong>{{obj.minimum_order_quantity}}</h6>
+                                        <p class="mb-0">
+                                            {% if obj.about %}
+                                            {{obj.about}}
+                                            {% else %}
+                                            {{obj.item_type.about}}
+                                            {% endif %}
+                                            <br />
+                                        <div>
+                                            {% if user.is_authenticated %}
+                                            <input type="hidden" name="id" id="id" value="{{obj.id}}">
+                                            <input style="width: 20%;" type="number" id="quantity_{{obj.id}}"
+                                                name="quantity" min="{{obj.minimum_order_quantity}}"
+                                                max="{{obj.quantity}}" value="{{obj.minimum_order_quantity}}">
+                                            <!-- totalCart(); is defined in theme main.html -->
+                                            <button onclick="add_to_cart('{{obj.id}}');totalCart();"
+                                                class="btn btn-warning btn-sm">Add to Cart</button>
+                                            <button onclick="requestQuote('{{obj.weight_group}}','{{obj.id}}','{{obj.name}}')" class="btn btn-primary btn-sm">Request
+                                                Quote (Bulk)</button>
+                                            <div class="float-right">
+                                                <h3><strong>Price/{{obj.weight_group}}:</strong>
+                                                    {{obj.selling_price_per_quantity}} <strike
+                                                        style="color: red;">{{obj.original_price_per_quantity}}</strike>
+                                                </h3>
+                                                {% else %}
+                                                <div class="float-right">
+                                                    <h3><strong>Price/{{obj.weight_group}}:</strong>
+                                                        {{obj.selling_price_per_quantity}} <strike
+                                                            style="color: red;">{{obj.original_price_per_quantity}}</strike>
+                                                    </h3>
+                                                    <br />
+                                                    <h5 style="color: red;">Please <a
+                                                            href="{% url 'user_login' %}">login</a> to add items to the
+                                                        cart!</h5>
+                                                    {% endif %}
+                                                </div>
+                                                <br />
+
+                                                <span class="badge bg-success" id="msg_{{obj.id}}"></span>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            {% if items.has_other_pages %}
+                            {% if items.has_previous %}
+                            <li class="page-item"><a class="page-link"
+                                    href="?search={{query}}&page={{ items.previous_page_number }}">&laquo;</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                            {% endif %}
+                            {% for i in items.paginator.page_range %}
+                            {% if items.number == i %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ i }} </a></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="?search={{query}}&page={{ i }}">{{ i }}</a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if items.has_next %}
+                            <li class="page-item"><a class="page-link"
+                                    href="?search={{query}}&page={{ items.next_page_number }}">&raquo;</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+                            {% endif %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}
+
+{% block extra_js %}
+{% if user.is_authenticated %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function add_to_cart(id) {
+        var name_qty = "quantity_" + id;
+        var msg_box = "msg_" + id;
+        var qty = document.getElementById(name_qty).value; // get value
+        //alert(qty)
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'public_form_add_to_cart' %}",
+            data: {
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+                "total_quantity": qty,
+                "listing": id
+            },
+            success: function (data) {
+                display_response = "";
+                if (data.message == "MAX_UPDATED")
+                    display_response = "Cart has reached maximum capacity for the item.";
+                else
+                    display_response = "Cart item has been " + data.message + ".";
+                display_response = display_response + " Current quantity is " + data.quantity;
+                document.getElementById(msg_box).innerHTML = display_response;
+
+            }
+        });
+    }
+    function requestQuote(wg,item,obj_name) {
+
+
+        Swal.fire({
+            title: 'Bulk Quote for <strong style="color:red;">'+obj_name+'</strong>',
+            html: `<form id="quoteForm" action="{% url 'add_new_quote'%}" method="POST">
+                   {% csrf_token %}
+                   <label for="quantity">Quantity</label><input type="number" min="1" id="quantity" name="quantity" class="swal2-input" placeholder="Quantity"><br/>`
+                   +`<label for="weight_group">Weight Category</label><select class="swal2-input" name="weight_group" id="id_weight_group">{% for obj in weight %}
+                    <option value="{{obj.id}}">{{obj.name}}</option>
+                   {% endfor %}</select><br/><br/>`
+                   +`<label for="billing_address">Billing Address</label><select class="swal2-input" name="billing_address" id="id_billing_address">{% for obj in address %}
+                    {% if obj.is_default%}
+                        <option value="{{obj.id}}" selected>{{obj.name}} GST:{{obj.gst_number}}</option>
+                    {% else %}
+                    <option value="{{obj.id}}">{{obj.name}} GST:{{obj.gst_number}}</option>
+                    {% endif %}
+                   {% endfor %}</select><br/>`
+                   +`<input type="hidden" id="item_name" name="item_name" class="swal2-input" placeholder="Item" value="`+item+`">`
+                   +`</form>`,
+            confirmButtonText: 'Request Quote',
+            focusConfirm: false,
+            preConfirm: () => {
+                const quantity = Swal.getPopup().querySelector('#quantity').value
+                if (!quantity || isNaN(quantity) || quantity<1) {
+                    Swal.showValidationMessage(`Please enter a valid Input!`)
+                }
+                return { quantity: quantity}
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                form = document.getElementById('quoteForm');
+                form.submit();
+                Swal.fire(`
+                        Quote of Quantity: ${result.value.quantity} submitted!
+                    `.trim())
+            }
+                            })
+
+                        
+    }
+</script>
+{% else %}
+<script>
+    $(document).ready(function () {
+        $("body").addClass("sidebar-collapse");
+    });
+</script>
+{% endif %}
+{% endblock %}

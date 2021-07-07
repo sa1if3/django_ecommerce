@@ -1,0 +1,134 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% block main_title %}
+My Inventories
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <!-- <h1>My Inventories </h1> -->
+          <a style="width: 50%;" class="btn btn-block btn-outline-primary" href="{% url 'add_new_inventory' %}">Add New
+            Entry</a class="">
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">My Inventories</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+    <div class="row">
+      {% for obj in inventory %}
+      <div class="col-md-4">
+        <!-- Widget: user widget style 2 -->
+        <div class="card card-widget widget-user-2">
+          <!-- Add the bg color to the header using any of the bg-* classes -->
+          <div class="widget-user-header bg-gray">
+            <div class="widget-user-image">
+              <img class="img-circle elevation-2"
+                src="{% static 'AdminLTE-master/dist/img/undraw_deliveries_131a.svg' %}" alt="User Avatar">
+            </div>
+            <!-- /.widget-user-image -->
+            <h3 class="widget-user-username">{{ obj.name}}</h3>
+            <h5 class="widget-user-desc">{{ obj.contact_name}}</h5>
+          </div>
+          <div class="card-footer p-0">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  Max Quantity <span class="float-right badge bg-primary">{{obj.max_quantity}}</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  Weight Group <span class="float-right badge bg-info">{{obj.weight_group}}</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  Address <span class="float-right badge bg-success">{{obj.address}}</span>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  Contact Number <span class="float-right badge bg-danger">{{obj.contact_number}}</span>
+                </a>
+              </li>
+              <a class="btn btn-block btn-outline-primary btn-sm" href="{% url 'edit_inventory' obj.id %}"><span
+                  class="fas fa-edit">&nbsp;Edit</span></a>
+                  <form style="width:100%" method="POST" action="{% url 'delete_inventory' obj.id %}">
+                    {% csrf_token %}
+                    <!-- Checkbox i = 2 -->
+                     <button class="btn btn-block btn-outline-danger btn-sm delete-confirm"
+                        type="submit"><span class="fas fa-trash">&nbsp;Delete</span></button>
+                </form>                  
+            </ul>
+          </div>
+        </div>
+        <!-- /.widget-user -->
+      </div>
+      {% endfor %}
+
+
+    </div>
+    <!-- /.widget-user -->
+  </section>
+</div>
+<!-- /.col -->
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  $('.delete-confirm').on('click', function (ev) {
+        ev.preventDefault();
+        var form = $(this).parents('form');
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, item will be removed permanently!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                    swal("Poof! Cart item has been deleted!", {
+                        icon: "success",
+                    });
+                } else {
+                    swal("Cart item is safe!");
+                }
+            });
+    });
+</script>
+{% endblock %}

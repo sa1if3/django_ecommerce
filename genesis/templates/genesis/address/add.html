@@ -1,0 +1,210 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% block main_title %}
+Add New Address
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Add New Address</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Add New Address</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+          </div>
+        </div>
+        {% endfor %}
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <!-- <div class="card-header">
+                            <h3 class="card-title">Fill the form to add a new address</h3>
+                        </div> -->
+                        
+                        <form action="{% url 'add_new_address' %}" method="post">
+                            {% csrf_token %}
+                            <!-- /.card-header -->
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="locationName">Location / Organisation Name</label>
+                                            {{form.name}}
+                                            {% if form.errors.name %}
+                                            <span class="alert-danger">{{ form.errors.name.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="contactName">Contact Name</label>
+                                            {{ form.contact_name }}
+                                            {% if form.errors.contact_name %}
+                                            <span class="alert-danger">{{ form.errors.contact_name.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="contactNumber">Contact Number</label>
+                                            {{ form.contact_number }}
+                                            {% if form.errors.contact_number %}
+                                            <span class="alert-danger">{{ form.errors.contact_number.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="gst_number">GST</label>
+                                            {{ form.gst_number }}
+                                            {% if form.errors.gst_number %}
+                                            <span class="alert-danger">{{ form.errors.gst_number.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="addressLine1">Address Line #1</label>
+                                            {{ form.address_line_1 }}
+                                            {% if form.errors.address_line_1 %}
+                                            <span class="alert-danger">{{ form.errors.address_line_1.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="addressLine2">Address Line #2</label>
+                                            {{ form.address_line_2 }}
+                                            {% if form.errors.address_line_2 %}
+                                            <span class="alert-danger">{{ form.errors.address_line_2.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="deliveryInstructions">Delivery Instructions</label>
+                                            {{ form.delivery_instructions }}
+                                            {% if form.errors.delivery_instructions %}
+                                            <span class="alert-danger">{{ form.errors.delivery_instructions.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="city">City</label>
+                                            {{ form.city }}
+                                            {% if form.errors.city %}
+                                            <span class="alert-danger">{{ form.errors.city.as_text }}</span>
+                                            {% endif %} 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="state">State</label>
+                                            {{ form.state }}
+                                            {% if form.errors.state %}
+                                            <span class="alert-danger">{{ form.errors.state.as_text }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <label for="pincode">Pincode</label>
+                                            {{ form.pincode }}
+                                            {% if form.errors.pincode %}
+                                            <span class="alert-danger">{{ form.errors.pincode.as_text }}</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                    <label for="isDefault">Set As your Default Address </label>
+                                    {{ form.is_default }}
+                                    {% if form.errors.is_default %}
+                                    <span class="alert-danger">{{ form.errors.is_default.as_text }}</span>
+                                    {% endif %}
+                                <button type="submit" style="float: right;" class="btn btn-warning">Save</button>
+                            </div>
+                        </form>
+                        
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}
+
+{% block extra_js %}
+<!-- Bootstrap Switch -->
+<script src="{% static 'AdminLTE-master/plugins/bootstrap-switch/js/bootstrap-switch.min.js' %}"></script>
+<script>
+    $(function () {
+        $("[name='is_default']").bootstrapSwitch();
+    })
+  </script>
+{% endblock %}

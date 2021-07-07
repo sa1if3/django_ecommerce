@@ -1,0 +1,62 @@
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block extra_meta %}{% endblock %}
+
+  <title>{% app_name%}&nbsp;{% app_name_tail%} | {% block main_title %}{% endblock %} </title>
+
+  {% include 'themeonly/css_files.html' %}
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body class="hold-transition sidebar-mini">
+  <!-- Site wrapper -->
+  <div class="wrapper">
+
+    {% include 'themeonly/side_nav.html' %}
+
+    {% include 'themeonly/top_nav.html' %}
+
+
+    {% block content %}{% endblock %}
+
+
+    {% include 'themeonly/footer.html' %}
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+      <!-- Control sidebar content goes here -->
+    </aside>
+    <!-- /.control-sidebar -->
+  </div>
+  <!-- ./wrapper -->
+
+  {% include 'themeonly/js_files.html' %}
+  {% block extra_js %}{% endblock %}
+  {% if user.is_authenticated %}
+  <!-- Access Total Cart Count -->
+  <script>
+    $(document).ready(function () {
+      totalCart();
+    });
+    function totalCart() {
+      $.ajax({
+        type: "GET",
+        url: "{% url 'public_total_cart' %}",
+        success: function (data) {
+          if (data.item_count)
+            document.getElementById("totalCart").innerHTML = data.item_count;
+        }
+      });
+    }
+    
+  </script>
+  <!-- Access Total Cart Count -->
+  {% endif %}
+</body>
+
+</html>

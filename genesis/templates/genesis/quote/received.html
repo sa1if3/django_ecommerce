@@ -1,0 +1,251 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% load tz %}
+
+{% block main_title %}
+Received Quotes
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+<!-- DataTables -->
+<link rel="stylesheet" href="{% static 'AdminLTE-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
+<link rel="stylesheet"
+  href="{% static 'AdminLTE-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css' %}">
+<link rel="stylesheet" href="{% static 'AdminLTE-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Received Quotes </h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Received Quotes</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <!-- <div class="card-header">
+              <h3 class="card-title">Listings</h3>
+            </div> -->
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Action Reqd.?</th>
+                    <th>Billing Address</th>
+                    <th>Item Name</th>
+                    <th>Timestamp</th>
+                    <th>Quantity</th>
+                    <th>Download</th>
+                    <th>Upload</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for obj in items%}
+                  <tr>
+                    <td>
+                        {% if obj.seller_action_required == False %}
+                        <h2 class="badge bg-danger">No</h2>
+                        {% else %}
+                        <h2 class="badge bg-success">Yes</h2>
+                        {% endif %}
+                    </td>
+                    <td>
+                      {{obj.billing_address.name}}<br/>
+                      GST:{{obj.billing_address.gst_number}}<br/>
+                      {{obj.billing_address.address_line_1}}
+                      {{obj.billing_address.address_line_2}}<br/>
+                      {{obj.billing_address.city}},{{obj.billing_address.state}}-{{obj.billing_address.pincode}}<br/>
+                      {{obj.billing_address.contact_name}}-{{obj.billing_address.contact_number}}<br/>
+                      Deliver Instructions: {{obj.billing_address.delivery_instructions}}<br/>
+                    </td>
+                    <td>{{obj.item_name.name}}</td>
+                    <td>
+                      <strong>Created:</strong>{{obj.created_at |timezone:"Asia/Kolkata"}}
+                      <br />
+                      <strong>Updated:</strong>{{obj.updated_at |timezone:"Asia/Kolkata"}}
+                    </td>
+                    <td>{{obj.quantity}} {{obj.weight_group}}</td>
+                    <td> 
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Download
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% if obj.quote_file %}
+                                    <a class="dropdown-item" href="{{obj.quote_file.url}}" target="_blank">Quote</a>    
+                                {% endif %}
+                                {% if obj.po_file %}
+                                    <a class="dropdown-item" href="{{obj.po_file.url}}" target="_blank">Purchase Order</a>
+                                {% endif %}
+                                {% if obj.delivery_receipt_file %}
+                                    <a class="dropdown-item" href="{{obj.delivery_receipt_file.url}}" target="_blank">Delivery Receipt</a>
+                                {% endif %}
+                                {% if obj.invoice_file %}
+                                    <a class="dropdown-item" href="{{obj.invoice_file.url}}" target="_blank">Invoice</a>
+                                {% endif %}
+                            </div>
+                          </div>
+                    </td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Upload
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="{% url 'edit_quote_order' obj.id %}">Quote</a>
+                                <a class="dropdown-item" href="{% url 'edit_dr_invoice' obj.id %}">Invoice & D.R.</a>
+                                
+                            </div>
+                          </div> 
+                    
+                    </td>
+                    <td>
+                        {% if obj.status == 'QUOTE_SENT' or obj.status == 'COMPLETED'%}
+                        <span class="badge bg-success">
+                        {% elif obj.status == 'RECEIVED' %}
+                        <span class="badge bg-info">
+                        {% else %}
+                        <span class="badge bg-warning">
+                        {% endif %}
+                          {{obj.get_status_display}}</span>
+                      </td>                   
+                    {% endfor %}
+                  </tr>
+                </tbody>
+                <!-- <tfoot>
+                  
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Quote</th>
+                    <th>Purchase Order</th>
+                    <th>Status</th>
+                  </tr>
+                  
+                </tfoot> -->                
+              </table>
+              <ul class="pagination pagination-sm m-0 float-right">
+                {% if items.has_other_pages %}
+                {% if items.has_previous %}
+                <li class="page-item"><a class="page-link"
+                        href="?search={{query}}&page={{ items.previous_page_number }}">&laquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                {% endif %}
+                {% for i in items.paginator.page_range %}
+                {% if items.number == i %}
+                <li class="page-item active"><a class="page-link" href="#">{{ i }} </a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?search={{query}}&page={{ i }}">{{ i }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+                {% if items.has_next %}
+                <li class="page-item"><a class="page-link"
+                        href="?search={{query}}&page={{ items.next_page_number }}">&raquo;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+                {% endif %}
+                {% endif %}
+            </ul>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <!-- /.widget-user -->
+    </div>
+  </section>
+</div>
+<!-- /.col -->
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- DataTables  & Plugins -->
+<script src="{% static 'AdminLTE-master/plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.bootstrap4.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/jszip/jszip.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/pdfmake/pdfmake.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/pdfmake/vfs_fonts.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'AdminLTE-master/plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- <script>
+  $('.delete-confirm').on('click', function (ev) {
+        ev.preventDefault();
+        var form = $(this).parents('form');
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, item will be removed permanently!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                    swal("Poof! Cart item has been deleted!", {
+                        icon: "success",
+                    });
+                } else {
+                    swal("Cart item is safe!");
+                }
+            });
+    });
+</script> -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "paging": false,
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+  });
+</script>
+{% endblock %}

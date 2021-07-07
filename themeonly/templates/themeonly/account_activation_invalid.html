@@ -1,0 +1,54 @@
+{% load static %}
+{% load custom_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% app_name %} {% app_name_tail %} | Reset Password Email Sent</title>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'AdminLTE-master/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'AdminLTE-master/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'AdminLTE-master/dist/css/adminlte.min.css' %}">
+  <style type="text/css">
+    .login-page {
+    background: url("{%static 'AdminLTE-master/dist/img/undraw_environment_iaus.svg' %}") no-repeat center center fixed;
+    background-size: cover;	
+    }
+    </style>
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <!-- /.login-logo -->
+  <div class="card card-outline card-success">
+    <div class="card-header text-center">
+      <a href="{% site_url %}" class="h1"><b>{% app_name %}</b> {% app_name_tail %}</a>
+    </div>
+    <div class="card-body">
+      <img class="img-fluid" src="{%static 'AdminLTE-master/dist/img/undraw_Notify_re_65on.svg' %}" alt="Email Sent"><br/><br/>
+      <p class="login-box-msg">Account activation failed. The token is Invalid!</p>
+      <p class="mb-1">
+        <a href="{% url 'user_login' %}">Login</a>
+      </p>
+      <p class="mb-0">
+        <a href="{% url 'user_register' %}" class="text-center">Create a free account?</a>
+      </p>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="{% static 'AdminLTE-master/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'AdminLTE-master/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'AdminLTE-master/dist/js/adminlte.min.js' %}"></script>
+</body>
+</html>

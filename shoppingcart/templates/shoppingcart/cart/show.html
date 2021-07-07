@@ -1,0 +1,289 @@
+{% extends 'themeonly/main.html' %}
+{% load static %}
+{% block main_title %}
+Shopping Cart
+{% endblock %}
+
+{% block extra_meta %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .prod {
+        width: 200px;
+        height: 300px;
+        object-fit: scale-down;
+    }
+
+    .no-outline:focus {
+        outline: none;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Shopping Cart</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Shopping Cart</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Default box -->
+        <div class="card">
+            {% if cart %}
+            <div class="card-body">
+                <div class="row">
+
+                    <table id="dataTable" class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>Image</th>
+                                <th>Product</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for obj in cart %}
+                            <tr>
+                                <td style="vertical-align: middle;"><input name="selectCheck[]" type="checkbox" checked
+                                        onchange="getData();"> 
+                                        <!-- Checkbox i = 0 -->
+                                </td>
+                                <td>
+                                    <!-- <img class="img-fluid" src="{% static 'AdminLTE-master/dist/img/undraw_deliveries_131a.svg' %}" style="max-height: 160px;"> -->
+                                    {% if obj.listing.image %}
+                                    <img src="{{obj.listing.image.url}}" class="img-fluid" style="max-height: 160px;">
+                                    {% else %}
+                                    {% if obj.listing.item_type.image %}
+                                    <img src="{{obj.listing.item_type.image.url}}" class="img-fluid"
+                                        style="max-height: 160px;">
+                                    {% else %}
+                                    <img src="{%static 'AdminLTE-master/dist/img/undraw_environment_iaus.svg' %}"
+                                        class="img-fluid" style="max-height: 160px;">
+                                    {% endif %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h2><a href="#">{{ obj.listing }}</a></h2>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <p> {% if obj.listing.about %}
+                                                {{obj.listing.about}}
+                                                {% else %}
+                                                {{obj.listing.item_type.about}}
+                                                {% endif %}
+                                                <br />
+
+                                                <span class="badge bg-success" id="msg_{{obj.listing.id}}"></span>
+                                            </p>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label for="quantity">Qty:</label>
+                                            <input onchange="getData();add_to_cart('{{obj.listing.id}}');"
+                                                style="width: 40%;" type="number" id="quantity_{{obj.listing.id}}"
+                                                name="quantity" min="{{obj.listing.minimum_order_quantity}}"
+                                                max="{{obj.listing.quantity}}" value="{{obj.total_quantity}}"
+                                                data-new-value="{{obj.total_quantity}}">
+                                            <!-- Checkbox i = 1 -->
+                                        </div>
+                                        <div class="col-md-2">
+                                            <form method="POST" action="{% url 'public_destroy_from_cart' obj.id %}">
+                                                {% csrf_token %}
+                                                <!-- Checkbox i = 2 -->
+                                                 <button class="btn btn-sm btn-danger delete-confirm"
+                                                    type="submit">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    <input
+                                        style="border-top-style: hidden;border-right-style: hidden;border-left-style: hidden;border-bottom-style: hidden;background-color: #FFF;"
+                                        class="no-outline" type="text" readonly id="total" name="total[]"
+                                        value="{{obj.listing.selling_price_per_quantity}}">
+                                        <!-- Checkbox i = 3 -->
+                                    <input type="hidden" readonly id="orig_total"
+                                        value="{{obj.listing.selling_price_per_quantity}}">
+                                        <!-- Checkbox i = 4 -->
+                                    <input type="hidden" readonly id="item_id" name="item_id" value="{{obj.id}}">
+                                    <!-- Checkbox i = 5 -->
+
+                                </td>
+                            </tr>
+
+
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3">
+                                    <h2 style="float: right;">Subtotal :</h2>
+                                </th>
+                                <th>
+                                    <h2 id="subtotal"></h2>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+
+
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <a style="float:right;" class="btn btn-lg btn-warning" onclick="checkout();">Checkout</a>
+                <form id="checkoutForm" action="{% url 'checkout' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="box-body" id="wrapper"></div>
+                </form>
+            </div>
+            <!-- /.card-footer-->
+            {% else %}
+
+            <img src="{% static 'AdminLTE-master/dist/img/undraw_empty_xct9.svg' %}"
+                style="float:centre;max-width: 50%; max-height: auto;">
+            {% endif %}
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    $(document).ready(function () {
+        getData();
+    });
+    function getData() {
+        //Reference the Table.
+        var grid = document.getElementById("dataTable");
+        var total = document.getElementsByName("total");
+
+        //Reference the CheckBoxes in Table.
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        var local_sum = Number(0);
+        //Loop through the CheckBoxes.
+        for (var i = 0; i < checkBoxes.length; i = i + 6) {
+            //console.log("i=" + i + " " + checkBoxes[i].value);
+            if (checkBoxes[i].checked) {
+                // console.log("Quantity=" + checkBoxes[i + 1].value);
+                // console.log("Per Unit=" + checkBoxes[i + 4].value);
+                checkBoxes[i + 3].value = Number(checkBoxes[i + 1].value) * Number(checkBoxes[i + 4].value);
+                local_sum = Number(local_sum) + Number(checkBoxes[i + 3].value);
+
+            }
+        }
+        document.getElementById("subtotal").innerHTML = local_sum;
+    }
+    function add_to_cart(id) {
+        var name_qty = "quantity_" + id;
+        var msg_box = "msg_" + id;
+        var qty = document.getElementById(name_qty).value; // get value
+        //qty = Number(qty) - Number(org_qty);
+        var qty_new = document.getElementById(name_qty).getAttribute('data-new-value'); // get value
+        qty = Number(qty) - Number(qty_new);
+        $.ajax({
+            type: "POST",
+            url: "{% url 'public_form_add_to_cart' %}",
+            data: {
+                "csrfmiddlewaretoken": '{{ csrf_token }}',
+                "total_quantity": qty,
+                "listing": id
+            },
+            success: function (data) {
+                display_response = "";
+                if (data.message == "MAX_UPDATED")
+                    display_response = "Cart has reached maximum capacity for the item.";
+                else
+                    display_response = "Cart item has been " + data.message + ".";
+                display_response = display_response + " Current quantity is " + data.quantity;
+                document.getElementById(msg_box).innerHTML = display_response;
+                document.getElementById(name_qty).setAttribute('data-new-value', data.quantity);
+                document.getElementById(name_qty).value = data.quantity;
+                getData();
+
+            }
+        });
+    }
+    function checkout() {
+        //Reference the Table.
+        var grid = document.getElementById("dataTable");
+        var total = document.getElementsByName("total");
+        var var1, var2;
+        //Reference the CheckBoxes in Table.
+        var checkBoxes = grid.getElementsByTagName("INPUT");
+        //Loop through the CheckBoxes.
+        for (var i = 0; i < checkBoxes.length; i = i + 5) {
+            console.log("i=" + i + " " + checkBoxes[i].value);
+            if (checkBoxes[i].checked) {
+                var2 = checkBoxes[i + 1].value; //item quantity
+                var1 = checkBoxes[i + 5].value; //item id
+                //Dyanamic form
+                var newspan = document.createElement('div');
+                newspan.className = "col-md-12";
+                newspan.innerHTML = '<input type="hidden" name="itemID[]" value="' + var1 + '" readonly><input type="hidden" name="itemQTY[]" value="' + var2 + '" readonly>'
+                document.getElementById('wrapper').appendChild(newspan);
+            }
+        }
+        //submit form
+        document.getElementById("checkoutForm").submit();
+    }
+    $('.delete-confirm').on('click', function (ev) {
+        ev.preventDefault();
+        var form = $(this).parents('form');
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, item will be removed permanently!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                    swal("Poof! Cart item has been deleted!", {
+                        icon: "success",
+                    });
+                } else {
+                    swal("Cart item is safe!");
+                }
+            });
+    });
+</script>
+{% endblock %}
