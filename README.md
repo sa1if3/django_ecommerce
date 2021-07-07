@@ -6,7 +6,9 @@
 
 ### Set Environment 
 Create a Virtual Environment
-`virtualenv venv`
+```bash
+virtualenv venv
+```
 
 Activate Virtual Environment
 `source venv/bin/activate`
