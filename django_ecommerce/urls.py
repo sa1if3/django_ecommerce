@@ -19,6 +19,7 @@ from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 import debug_toolbar
+
 admin.site.site_header = 'Django Market Administration'                    # default: "Django Administration"
 admin.site.index_title = 'Main Admin Page'                 # default: "Site administration"
 admin.site.site_title = 'Django Market Site Admin' # default: "Django site admin"
