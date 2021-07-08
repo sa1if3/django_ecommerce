@@ -153,5 +153,8 @@ python manage.py runserver
 
 Go to `http://yourdomain.com/accounts` and log in as superuser. The admin needs to setup some initial data which restricts the user to sell items from the given category only. Enter data in the following order
 1. Item Types: Type of item being sold
+![Item Type](https://github.com/sa1if3/django_ecommerce/blob/main/Screenshots/item_type.PNG?raw=true)
 1. Items : Each Item has an item type
+![Item](https://github.com/sa1if3/django_ecommerce/blob/main/Screenshots/items.PNG?raw=true)
 3. Weight Groups: Used during listing
+![Weight Group](https://github.com/sa1if3/django_ecommerce/blob/main/Screenshots/weight_group.PNG?raw=true)
