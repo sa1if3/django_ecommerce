@@ -191,6 +191,12 @@ A seller also needs to setup some initial data to list their items.
     <td><img src="Screenshots/Signup.PNG" width=600 height=250></td>
     <td><img src="Screenshots/email_verification.PNG" width=400 height=250></td>
   </tr>
+  <tr>
+    <td colspan="2">Dashboard</td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="Screenshots/dashboard.PNG" width=1000 height=400></td>
+  </tr>
  </table>
 ## Theme and Images
 [AdminLTE](https://adminlte.io/themes/v3/)
