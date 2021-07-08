@@ -181,6 +181,30 @@ A seller also needs to setup some initial data to list their items.
 1. Create Inventory: Used for Listing items. The name is showed to buyer too.
 
 1. Create Listing: List items for personal use view status as `Private` or for public to view and purchase by setting the view status as `Public`. If all the items of a listing were sold off the listing becomes automatically private and the seller is notified via email. The seller cannot search for their own listings.
+
+## Order Process
+
+### Buy/Sell
+1. Search
+1. Add to Cart
+1. Check Out
+1. View Order Invoice
+
+### Quotes
+1. Search
+1. Request Quote
+1. Seller Uploads Quote
+1. Buyer Uploads Purchase Order
+1. Seller Uploads Invoice and Delivery Receipt
+
+## Theme and Images
+
+[AdminLTE](https://adminlte.io/themes/v3/)
+
+[unDraw](https://undraw.co/illustrations)
+
+[pixabay](https://pixabay.com/)
+
 ## Screenshots
 <table>
   <tr>
@@ -220,9 +244,4 @@ A seller also needs to setup some initial data to list their items.
     <td><img src="Screenshots/Inventory.PNG" width=400 height=250></td>
   </tr>
  </table>
-## Theme and Images
-[AdminLTE](https://adminlte.io/themes/v3/)
 
-[unDraw](https://undraw.co/illustrations)
-
-[pixabay](https://pixabay.com/)
