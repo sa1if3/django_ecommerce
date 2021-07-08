@@ -1,7 +1,24 @@
 # Django Ecommerce/Market
-## About
 
-Django Ecommerce is an unique marketplace focused on enabling users to buy/sell products directly or request/send quotes without any complicated or exhaustive process. This is the opensource version of a larger project.
+Django E-commerce is a unique marketplace focused on enabling users to buy/sell products directly or request/send quotes without any complicated or exhaustive process. This is the open-source version of a larger project.
+
+ ## Contents
+ 1. [Features](#features)
+ 1. [Installation](#installation)
+    1. [Download the project](#download-the-project)
+    1. [Set Environment](#set-environment )
+    1. [Async Tasks using Celery and Redis](#async-tasks-using-celery-and-redis)
+    1. [Debug Toolbar](#debug-toolbar)
+    1. [Migrate Database](#migrate-database)
+    1. [Create a superuser](#create-a-superuser)
+    1. [Collect static](#collect-static)
+1. [Run Development Server](#run-development-server)
+1. [First Run and Initial Data](#first-run-and-initial-data)
+    1. [Admin Section](#admin-section)
+    1. [User Section](#user-section)
+1. [Order Process](#order-process)
+1. [Credits](#credits)
+1. [Screenshots](#screenshots)
 
 ### Features
 1. User Panel
@@ -70,7 +87,7 @@ Activate Virtual Environment
 source venv/bin/activate
 ```
 
-Download Prequisites using requirements.txt
+Download Prerequisites using requirements.txt
 ```bash
 pip install -r requirements.txt
 ```
@@ -83,7 +100,7 @@ deactivate
 ### Async Tasks using Celery and Redis
 Install Redis in Ubuntu 20.04 by following this [tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04)
 
-In `settings.py` set the following variables. Change according to your use-case.
+In `settings.py` set the following variables. Change according to your use case.
 
 ```python
 BROKER_URL = 'redis://localhost:6379'
@@ -104,10 +121,10 @@ Run Celery worker
 celery -A django_ecommerce  worker -l info
 ```
 
-[Note: In production this command can be put in Supervisor]
+[Note: In production, this command can be put in Supervisor]
 
 ### Debug Toolbar
-If you are interested in using the debug toolbar make sure to change your `settings.py` file with appropriate IP.
+If you are interested in using the debug toolbar make sure to change your `settings.py` file with the appropriate IP.
 
 ```python
 DEBUG = True
@@ -133,7 +150,7 @@ DATABASES = {
 }
 ```
 
-Section A of my [tutorial](https://techflow360.com/how-to-build-django-rest-api-with-oauth-2-0/) covers the setting up a server part for Django development.
+Section A of my [tutorial](https://techflow360.com/how-to-build-django-rest-api-with-oauth-2-0/) covers the setting up of a server part for Django development.
 
 Run
 
@@ -160,27 +177,27 @@ python manage.py collectstatic
 ```
 
 ## Run Development Server
-To start the project simply run the server with this command inside activated virtual environment.
+To start the project simply run the server with this command inside the activated virtual environment.
 ```bash
 python manage.py runserver
 ``` 
 
 ## First Run and Initial Data
 ### Admin Section
-Go to `http://yourdomain.com/accounts` and log in as superuser. The admin needs to setup some initial data which restricts the user to sell items from the given category only. Enter data in the following order
+Go to `http://yourdomain.com/accounts` and log in as a superuser. The admin needs to set up some initial data which restricts the user to sell items from the given category only. Enter data in the following order
 1. Create Item Types: Type of item being sold
 ![Item Type](https://github.com/sa1if3/django_ecommerce/blob/main/Screenshots/item_type.PNG?raw=true)
-1. Create Items : Each Item has an item type
+1. Create Items: Each Item has an item type
 ![Item](https://github.com/sa1if3/django_ecommerce/blob/main/Screenshots/items.PNG?raw=true)
-3. Create Weight Groups: Used during listing, quote request and orders
+3. Create Weight Groups: Used during the listing, quote request and orders
 ![Weight Group](https://github.com/sa1if3/django_ecommerce/blob/main/Screenshots/weight_group.PNG?raw=true)
 
 ### User Section
-A seller also needs to setup some initial data to list their items.
+A seller also needs to set up some initial data to list their items.
 1. Create Address: Used for Inventory and invoices
-1. Create Inventory: Used for Listing items. The name is showed to buyer too.
+1. Create Inventory: Used for Listing items. The name is shown to the buyer too.
 
-1. Create Listing: List items for personal use view status as `Private` or for public to view and purchase by setting the view status as `Public`. If all the items of a listing were sold off the listing becomes automatically private and the seller is notified via email. The seller cannot search for their own listings.
+1. Create Listing: List items for personal use view status as `Private` or public to view and purchase by setting the view status as `Public`. If all the items of a listing were sold off; the listing becomes automatically private and the seller is notified via email. The seller cannot search for their listings.
 
 ## Order Process
 
@@ -197,7 +214,7 @@ A seller also needs to setup some initial data to list their items.
 1. Buyer Uploads Purchase Order
 1. Seller Uploads Invoice and Delivery Receipt
 
-## Theme and Images
+## Credits
 
 [AdminLTE](https://adminlte.io/themes/v3/)
 
