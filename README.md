@@ -184,14 +184,14 @@ A seller also needs to setup some initial data to list their items.
 ## Screenshots
 <table>
   <tr>
-    <td>First Screen Page</td>
-     <td>Holiday Mention</td>
-     <td>Present day in purple and selected day in pink</td>
+    <td>Sign Up</td>
+     <td>Login</td>
+     <td>Email Verification</td>
   </tr>
   <tr>
-    <td><img src="screenshots/Screenshot_1582745092.png" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745125.png" width=270 height=480></td>
-    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+    <td><img src="Screenshots/Signup.PNG" width=480 height=270></td>
+    <td><img src="Screenshots/login.PNG" width=480 height=270></td>
+    <td><img src="Screenshots/email_verification.PNG" width=480 height=270></td>
   </tr>
  </table>
 ## Theme and Images
