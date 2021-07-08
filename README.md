@@ -6,7 +6,7 @@ Django E-commerce is a unique marketplace focused on enabling users to buy/sell 
  1. [Features](#features)
  1. [Installation](#installation)
     1. [Download the project](#download-the-project)
-    1. [Set Environment](#set-environment )
+    1. [Set Virtual Environment](#set-virtual-environment )
     1. [Async Tasks using Celery and Redis](#async-tasks-using-celery-and-redis)
     1. [Debug Toolbar](#debug-toolbar)
     1. [Migrate Database](#migrate-database)
@@ -76,7 +76,7 @@ or
 
 [Download ZIP](https://github.com/sa1if3/django_ecommerce/archive/refs/heads/main.zip)
 
-### Set Environment 
+### Set Virtual Environment 
 Create a Virtual Environment
 ```bash
 virtualenv venv
@@ -96,7 +96,20 @@ Deactivate Virtual Environment
 ```bash
 deactivate
 ```
+### Configure Settings
+Create a `.env` file in project folder `django_ecommerce` and provide values for the following variables. In case you are not using Email or SMS. Those fields can be left empty.
 
+```python
+SECRET_KEY=django-insecure-+_vcui795ns-2bl-$n)43ttpt6)s5s^2=t+8z*pv6%cqc*s)0i5
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+EMAIL_HOST_USER=
+EMAIL_HOST_PASSWORD=
+PINGSMS_API_KEY=
+PINGMS_SINGLE_SMS_TEMPLATE=
+PINGMS_SENDER_ID=
+```
 ### Async Tasks using Celery and Redis
 Install Redis in Ubuntu 20.04 by following this [tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis-on-ubuntu-18-04)
 
