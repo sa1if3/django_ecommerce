@@ -21,15 +21,17 @@ Django Ecommerce is an unique marketplace focused on enabling users to buy/sell 
         - Quote
             - Placed By User
             - Placed By Customer
-            - Upload Pdf 
-                - Purchase Order
-                - Quote
-                - Invoice
-                - Delivery Receipt
+            - Upload Pdf
+                - By Customer
+                    - Purchase Order
+                - By User/Seller 
+                    - Quote 
+                    - Invoice
+                    - Delivery Receipt 
     1. Email Notifications: Enabled when `EMAIL_SEND = True` in `settings.py`
     1. SMS Notifications: Enabled when `SMS_SEND = True` in `settings.py`. (Pingsms API)[https://pypi.org/project/pingsms-api/]
-    1. Multiple Addresses
-    1. Multiple Inventories
+    1. Multiple Addresses: User addresses. One address can be set as default.
+    1. Multiple Inventories: Each inventory must have an address.
     1. Item Listing: Each item is listed by against an inventory with visibility Public/Private.
 
 ## Installation
@@ -117,8 +119,39 @@ DATABASES = {
 
 Section A of my [tutorial](https://techflow360.com/how-to-build-django-rest-api-with-oauth-2-0/) covers the setting up a server part for Django development.
 
+Run
+
+```bash
+python manage.py makemigrations
+```
+Followed by
+
+```bash
+python manage.py migrate
+```
+
+### Create a superuser
+A superuser is required to access the admin panel located at `/accounts`
+
+```bash
+python manage.py createsuperuser
+```
+### Collect static
+In case static files don't run properly simply run
+
+```bash
+python manage.py collectstatic
+```
+
 ## Run Development Server
 To start the project simply run the server with this command inside activated virtual environment.
 ```bash
 python manage.py runserver
 ``` 
+
+## First Run and Initial Data
+
+Go to `http://yourdomain.com/accounts` and log in as superuser. The admin needs to setup some initial data which restricts the user to sell items from the given category only. Enter data in the following order
+1. Item Types: Type of item being sold
+1. Items : Each Item has an item type
+3. Weight Groups: Used during listing
