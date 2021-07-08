@@ -15,7 +15,7 @@ class ItemType(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = "1. Item/Crop Types"
+        verbose_name_plural = "1. Item Types"
 
     def __str__(self):
         return self.name
@@ -32,7 +32,7 @@ class Item(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name_plural = "2. Items/Crops"
+        verbose_name_plural = "2. Items"
 
     def __str__(self):
         return self.name
