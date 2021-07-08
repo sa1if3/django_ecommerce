@@ -195,7 +195,29 @@ A seller also needs to setup some initial data to list their items.
     <td colspan="2">Dashboard</td>
   </tr>
   <tr>
-    <td colspan="2"><img src="Screenshots/dashboard.PNG" width=1000 height=400></td>
+    <td colspan="2"><img src="Screenshots/dashboard.PNG" width=1000 height=350></td>
+  </tr>
+  <tr>
+    <td colspan="2">Search</td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="Screenshots/search.PNG" width=1000 height=350></td>
+  </tr>
+  <tr>
+    <td>Log In</td>
+     <td>Address</td>
+  </tr>
+  <tr>
+    <td><img src="Screenshots/login.PNG" width=600 height=250></td>
+    <td><img src="Screenshots/address.PNG" width=400 height=250></td>
+  </tr>
+  <tr>
+    <td>Checkout</td>
+     <td>Inventory</td>
+  </tr>
+  <tr>
+    <td><img src="Screenshots/checkout.PNG" width=600 height=250></td>
+    <td><img src="Screenshots/inventory.PNG" width=400 height=250></td>
   </tr>
  </table>
 ## Theme and Images
