@@ -62,7 +62,7 @@ class ListingForm(forms.ModelForm):
 
     class Meta:
         model = Listing
-        fields = ['name', 'item_type', 'inventory_name', 'quantity', 'image', 'weight_group', 'selling_price_per_quantity',
+        fields = ['name', 'item_type', 'inventory_name', 'quantity', 'image', 'weight_group','original_price_per_quantity', 'selling_price_per_quantity',
                   'minimum_order_quantity', 'status', 'about', 'keywords', 'created_by']
 
     def __init__(self, *args, **kwargs):

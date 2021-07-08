@@ -33,6 +33,22 @@ Django Ecommerce is an unique marketplace focused on enabling users to buy/sell 
     1. Multiple Addresses: User addresses. One address can be set as default.
     1. Multiple Inventories: Each inventory must have an address.
     1. Item Listing: Each item is listed by against an inventory with visibility Public/Private.
+    1. Shopping Cart
+        - Checkout
+        - TODO: Payment
+    1. TODO: Chats and Notifications
+
+1. Admin Panel
+    1. Item Types
+    1. Items
+    1. Weight Groups
+    1. Addresses
+    1. Inventories
+    1. Listings
+    1. Orders
+    1. Quotes
+    1. Shopping Carts
+
 
 ## Installation
 ### Download the project
@@ -150,11 +166,37 @@ python manage.py runserver
 ``` 
 
 ## First Run and Initial Data
-
+### Admin Section
 Go to `http://yourdomain.com/accounts` and log in as superuser. The admin needs to setup some initial data which restricts the user to sell items from the given category only. Enter data in the following order
-1. Item Types: Type of item being sold
+1. Create Item Types: Type of item being sold
 ![Item Type](https://github.com/sa1if3/django_ecommerce/blob/main/Screenshots/item_type.PNG?raw=true)
-1. Items : Each Item has an item type
+1. Create Items : Each Item has an item type
 ![Item](https://github.com/sa1if3/django_ecommerce/blob/main/Screenshots/items.PNG?raw=true)
-3. Weight Groups: Used during listing
+3. Create Weight Groups: Used during listing, quote request and orders
 ![Weight Group](https://github.com/sa1if3/django_ecommerce/blob/main/Screenshots/weight_group.PNG?raw=true)
+
+### User Section
+A seller also needs to setup some initial data to list their items.
+1. Create Address: Used for Inventory and invoices
+1. Create Inventory: Used for Listing items. The name is showed to buyer too.
+
+1. Create Listing: List items for personal use view status as `Private` or for public to view and purchase by setting the view status as `Public`. If all the items of a listing were sold off the listing becomes automatically private and the seller is notified via email. The seller cannot search for their own listings.
+## Screenshots
+<table>
+  <tr>
+    <td>First Screen Page</td>
+     <td>Holiday Mention</td>
+     <td>Present day in purple and selected day in pink</td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/Screenshot_1582745092.png" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745125.png" width=270 height=480></td>
+    <td><img src="screenshots/Screenshot_1582745139.png" width=270 height=480></td>
+  </tr>
+ </table>
+## Theme and Images
+[AdminLTE](https://adminlte.io/themes/v3/)
+
+[unDraw](https://undraw.co/illustrations)
+
+[pixabay](https://pixabay.com/)
