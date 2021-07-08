@@ -1,4 +1,36 @@
-# Django Ecommerce
+# Django Ecommerce/Market
+## About
+
+Django Ecommerce is an unique marketplace focused on enabling users to buy/sell products directly or request/send quotes without any complicated or exhaustive process. This is the opensource version of a larger project.
+
+### Features
+1. User Panel
+    1. User Management 
+        - Sign Up
+        - Log In
+        - Email Password Reset
+        - Email Verification
+    1. Dashboard
+    1. Item  
+        - Search (Category / Name)
+        - Buy Item
+        - Request Quote
+        - Orders
+            - Placed By User
+            - Placed By Customer
+        - Quote
+            - Placed By User
+            - Placed By Customer
+            - Upload Pdf 
+                - Purchase Order
+                - Quote
+                - Invoice
+                - Delivery Receipt
+    1. Email Notifications: Enabled when `EMAIL_SEND = True` in `settings.py`
+    1. SMS Notifications: Enabled when `SMS_SEND = True` in `settings.py`. (Pingsms API)[https://pypi.org/project/pingsms-api/]
+    1. Multiple Addresses
+    1. Multiple Inventories
+    1. Item Listing: Each item is listed by against an inventory with visibility Public/Private.
 
 ## Installation
 ### Download the project
@@ -55,3 +87,38 @@ celery -A django_ecommerce  worker -l info
 ```
 
 [Note: In production this command can be put in Supervisor]
+
+### Debug Toolbar
+If you are interested in using the debug toolbar make sure to change your `settings.py` file with appropriate IP.
+
+```python
+DEBUG = True
+
+INTERNAL_IPS = [
+    # ...
+    '127.0.0.1',
+    # ...
+]
+```
+### Migrate Database
+The project uses PostgreSQL. Make sure your `settings.py` is set to correct credential.
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'farmersmarket',
+        'USER': 'farmersmarketuser',
+        'PASSWORD': 'fkfQbfu6gnhGt',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
+```
+
+Section A of my [tutorial](https://techflow360.com/how-to-build-django-rest-api-with-oauth-2-0/) covers the setting up a server part for Django development.
+
+## Run Development Server
+To start the project simply run the server with this command inside activated virtual environment.
+```bash
+python manage.py runserver
+``` 
