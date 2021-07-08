@@ -217,7 +217,7 @@ A seller also needs to setup some initial data to list their items.
   </tr>
   <tr>
     <td><img src="Screenshots/checkout.PNG" width=600 height=250></td>
-    <td><img src="Screenshots/inventory.PNG" width=400 height=250></td>
+    <td><img src="Screenshots/Inventory.PNG" width=400 height=250></td>
   </tr>
  </table>
 ## Theme and Images
