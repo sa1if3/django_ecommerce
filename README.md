@@ -188,8 +188,8 @@ A seller also needs to setup some initial data to list their items.
      <td>Email Verification</td>
   </tr>
   <tr>
-    <td><img src="Screenshots/Signup.PNG" width=500 height=250></td>
-    <td><img src="Screenshots/email_verification.PNG" width=500 height=250></td>
+    <td><img src="Screenshots/Signup.PNG" width=600 height=250></td>
+    <td><img src="Screenshots/email_verification.PNG" width=400 height=250></td>
   </tr>
  </table>
 ## Theme and Images
