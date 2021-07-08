@@ -7,6 +7,7 @@ Django E-commerce is a unique marketplace focused on enabling users to buy/sell 
  1. [Installation](#installation)
     1. [Download the project](#download-the-project)
     1. [Set Virtual Environment](#set-virtual-environment )
+    1. [Configure .ENV Settings](#configure-settings)
     1. [Async Tasks using Celery and Redis](#async-tasks-using-celery-and-redis)
     1. [Debug Toolbar](#debug-toolbar)
     1. [Migrate Database](#migrate-database)
@@ -46,7 +47,7 @@ Django E-commerce is a unique marketplace focused on enabling users to buy/sell 
                     - Invoice
                     - Delivery Receipt 
     1. Email Notifications: Enabled when `EMAIL_SEND = True` in `settings.py`
-    1. SMS Notifications: Enabled when `SMS_SEND = True` in `settings.py`. (Pingsms API)[https://pypi.org/project/pingsms-api/]
+    1. SMS Notifications: Enabled when `SMS_SEND = True` in `settings.py`. [Pingsms API](https://pypi.org/project/pingsms-api/)
     1. Multiple Addresses: User addresses. One address can be set as default.
     1. Multiple Inventories: Each inventory must have an address.
     1. Item Listing: Each item is listed by against an inventory with visibility Public/Private.

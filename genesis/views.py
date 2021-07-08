@@ -506,7 +506,7 @@ def add_new_quote(request):
 @login_required(login_url="user_login")
 def show_all_sent_quote(request):
     try:
-        quote = Quote.objects.select_related("item_name","weight_group","billing_address").filter(created_by=request.user.id)
+        quote = Quote.objects.select_related("item_name","weight_group","billing_address").filter(created_by=request.user.id).order_by('-created_at')
         page = request.GET.get('page', 1)
         paginator = Paginator(quote, 10)
         try:
@@ -524,7 +524,7 @@ def show_all_sent_quote(request):
 @login_required(login_url="user_login")
 def show_all_received_quote(request):
     try:
-        quote = Quote.objects.select_related("item_name","weight_group","billing_address").filter(item_name__created_by=request.user.id)
+        quote = Quote.objects.select_related("item_name","weight_group","billing_address").filter(item_name__created_by=request.user.id).order_by('-created_at')
         page = request.GET.get('page', 1)
         paginator = Paginator(quote, 10)
         try:
