@@ -33,15 +33,55 @@ def search_listing(request):
 # @login_required(login_url="user_login")
 def public_listing(request):
     query = request.GET.get('search')
+    queryCategory = request.GET.get('searchCategory','itemAll')
+    queryCategoryCopy = queryCategory
+    if queryCategory == 'itemType' or queryCategory == 'itemName':
+        pass
+    else:
+        queryCategory = 'itemAll'
+    queryFilter = request.GET.get('searchFilter','itemLatest')
+    queryFilterCopy = queryFilter
+    
+    if queryFilter == 'itemOldest':
+        queryFilter = '-created_at'
+    elif queryFilter == 'itemCostliest':
+        queryFilter = '-selling_price_per_quantity'
+    elif queryFilter == 'itemCheapest':
+        queryFilter = 'selling_price_per_quantity'
+    else:
+        queryFilter = 'created_at'
     items = ""
     address = ""
     weight = ""
     try:
-        if request.user.is_authenticated:
-            item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(Q(~Q(created_by=request.user.id),
-                                                        status="PUBLIC", name__icontains=query) | Q(~Q(created_by=request.user.id),status="PUBLIC",item_type__name__icontains=query))
+        if queryCategory == 'itemAll':
+            if request.user.is_authenticated:
+                item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(Q(~Q(created_by=request.user.id),
+                                                            status="PUBLIC", name__icontains=query) | Q(~Q(created_by=request.user.id),status="PUBLIC",item_type__name__icontains=query)).order_by(queryFilter)
+            else:
+                item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(Q(status="PUBLIC", name__icontains=query) | Q(status="PUBLIC",item_type__name__icontains=query)).order_by(queryFilter)
+        
+        elif queryCategory == 'itemType':
+            if request.user.is_authenticated:
+                item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(~Q(created_by=request.user.id),status="PUBLIC",item_type__name__icontains=query).order_by(queryFilter)
+            else:
+                item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(status="PUBLIC",item_type__name__icontains=query).order_by(queryFilter)
+        
+        
+        elif queryCategory == 'itemName':
+            if request.user.is_authenticated:
+                item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(~Q(created_by=request.user.id),
+                                                            status="PUBLIC", name__icontains=query).order_by(queryFilter)
+            else:
+                item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(status="PUBLIC", name__icontains=query).order_by(queryFilter)
+        
+        
         else:
-            item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(Q(status="PUBLIC", name__icontains=query) | Q(status="PUBLIC",item_type__name__icontains=query))
+            if request.user.is_authenticated:
+                item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(Q(~Q(created_by=request.user.id),
+                                                            status="PUBLIC", name__icontains=query) | Q(~Q(created_by=request.user.id),status="PUBLIC",item_type__name__icontains=query))
+            else:
+                item = Listing.objects.select_related("item_type","inventory_name","weight_group").filter(Q(status="PUBLIC", name__icontains=query) | Q(status="PUBLIC",item_type__name__icontains=query))
         address = Address.objects.filter(created_by = request.user.id)
         weight = Weight.objects.all()
         page = request.GET.get('page', 1)
@@ -55,7 +95,7 @@ def public_listing(request):
     except Exception as e:
         messages.error(request, str(e))
 
-    return render(request, 'shoppingcart/publiclisting/show.html', {'items': items, 'query': query, 'address':address, 'weight':weight})
+    return render(request, 'shoppingcart/publiclisting/show.html', {'items': items, 'query': query, 'address':address, 'weight':weight, 'queryCategory':queryCategoryCopy,'queryFilter':queryFilterCopy})
 
 
 # @login_required(login_url="user_login")

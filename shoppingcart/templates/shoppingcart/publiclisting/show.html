@@ -54,22 +54,43 @@ Buy Items
             </div>
         </div>
         {% endfor %}
-        <div class="container-fluid">
+        <form action="{% url 'public_listing' %}" method="GET">
+        <div class="col-md-8 offset-md-2">
             <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <form action="{% url 'public_listing' %}" method="GET">
-                        <div class="input-group input-group-lg">
-                            <input name="search" id="search" type="search" class="form-control form-control-lg"
-                                placeholder="Type your keywords here" value="{{query}}">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-lg btn-default">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Search By:</label>
+                        <select name="searchCategory" id="searchCategory" class="form-control form-control-lg" style="width: 100%;">
+                            <option value="itemAll" {% if queryCategory == 'itemAll' %}selected{% endif %}>All</option>
+                            <option value="itemName" {% if queryCategory == 'itemName' %}selected{% endif %}>Name</option>
+                            <option value="itemType" {% if queryCategory == 'itemType' %}selected{% endif %}>Type</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label>Sort By:</label>
+                        <select name="searchFilter" id="searchFilter" class="form-control form-control-lg" style="width: 100%;">
+                            <option value="itemLatest" {% if queryFilter == 'itemLatest' %}selected{% endif %}>Latest</option>
+                            <option value="itemOldest" {% if queryFilter == 'itemOldest' %}selected{% endif %}>Oldest</option>
+                            <option value="itemCostliest" {% if queryFilter == 'itemCostliest' %}selected{% endif %}>Price - High to Low</option>
+                            <option value="itemCheapest" {% if queryFilter == 'itemCheapest' %}selected{% endif %}>Price - Low to High</option>
+                        </select>
+                    </div>
                 </div>
             </div>
+            <div class="form-group">
+                <div class="input-group input-group-lg">
+                    <input name="search" id="search"  type="search" class="form-control form-control-lg"  placeholder="Type your keywords here" value="{{query}}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-lg btn-default">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
             <div class="row mt-3">
                 <div class="col-md-10 offset-md-1">
                     <div class="list-group">
@@ -181,7 +202,6 @@ Buy Items
                     </div>
                 </div>
             </div>
-
 
     </section>
     <!-- /.content -->

@@ -44,23 +44,47 @@ Buy Items
         </div>
         {% endfor %}
         <div class="container-fluid">
-            <h2 class="text-center display-4">Search</h2>
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <form action="{% url 'public_listing' %}" method="GET">
-                        <div class="input-group">
-                            <input name="search" id="search"  type="search" class="form-control form-control-lg" placeholder="Type your keywords here">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-lg btn-default">
-                                    <i class="fa fa-search"></i>
-                                </button>
+            <h2 class="text-center display-4">Search Product</h2>
+            <form action="{% url 'public_listing' %}" method="GET">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Search By:</label>
+                                    <select name="searchCategory" id="searchCategory" class="form-control form-control-lg" style="width: 100%;">
+                                        <option value="itemAll" selected>All</option>
+                                        <option value="itemName">Name</option>
+                                        <option value="itemType">Type</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Sort By:</label>
+                                    <select name="searchFilter" id="searchFilter" class="form-control form-control-lg" style="width: 100%;">
+                                        <option value="itemLatest" selected>Latest</option>
+                                        <option value="itemOldest">Oldest</option>
+                                        <option value="itemCostliest">Price - High to Low</option>
+                                        <option value="itemCheapest">Price - Low to High</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </form>
+                        <div class="form-group">
+                            <div class="input-group input-group-lg">
+                                <input name="search" id="search"  type="search" class="form-control form-control-lg" placeholder="Type your keywords here">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-lg btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
-
     </section>
     <!-- /.content -->
 </div>
